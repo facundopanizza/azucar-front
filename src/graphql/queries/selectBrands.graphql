@@ -1,0 +1,6 @@
+query SelectBrands {
+  brands {
+    id
+    title
+  }
+}

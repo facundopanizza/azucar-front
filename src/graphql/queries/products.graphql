@@ -1,0 +1,18 @@
+query Products {
+  products {
+    id
+    title
+    brandCode
+    createdAt
+    updatedAt
+    brand {
+      id
+      title
+    }
+    prices {
+      id
+      amount
+      size
+    }
+  }
+}

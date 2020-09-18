@@ -1,0 +1,15 @@
+mutation CreateProduct($brandId: Int!, $brandCode: String!, $title: String!) {
+  createProduct(brandId: $brandId, brandCode: $brandCode, title: $title) {
+    errors {
+      field
+      message
+    }
+    product {
+      id
+      title
+      brandCode
+      createdAt
+      updatedAt
+    }
+  }
+}

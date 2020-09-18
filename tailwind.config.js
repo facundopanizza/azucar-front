@@ -6,10 +6,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'accent-1': '#333',
+        brand: '#CA4E4E',
       },
     },
   },
   variants: {},
   plugins: [],
-}
+};
