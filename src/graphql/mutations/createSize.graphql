@@ -1,0 +1,14 @@
+mutation CreateSize($title: String!) {
+  createSize(title: $title) {
+    errors {
+      field
+      message
+    }
+    size {
+      id
+      title
+      createdAt
+      updatedAt
+    }
+  }
+}

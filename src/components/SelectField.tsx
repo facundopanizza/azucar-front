@@ -8,6 +8,7 @@ interface InputProps {
   placeholder: string;
   options: any;
   optionName: string;
+  value?: string;
 }
 
 export const SelectField: React.FC<InputProps> = ({
@@ -15,6 +16,7 @@ export const SelectField: React.FC<InputProps> = ({
   name,
   options,
   optionName,
+  value = 'id',
   ...props
 }) => {
   const [field, { error }, { setValue, setTouched }] = useField(name);
@@ -33,7 +35,7 @@ export const SelectField: React.FC<InputProps> = ({
         <option value="default">{props.placeholder}</option>
         {options.map((option) => {
           return (
-            <option key={option.id} value={option.id}>
+            <option key={option.id} value={option[value]}>
               {option[optionName]}
             </option>
           );

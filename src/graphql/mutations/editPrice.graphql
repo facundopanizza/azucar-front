@@ -1,0 +1,15 @@
+mutation EditPrice($id: Int!, $size: String!, $amount: Float!) {
+  editPrice(id: $id, size: $size, amount: $amount) {
+    errors {
+      field
+      message
+    }
+    price {
+      id
+      amount
+      size
+      createdAt
+      updatedAt
+    }
+  }
+}

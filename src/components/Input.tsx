@@ -1,6 +1,5 @@
 import React from 'react';
 import { useField } from 'formik';
-import Select from 'react-select';
 
 interface InputProps {
   name: string;
@@ -8,6 +7,7 @@ interface InputProps {
   placeholder: string;
   type: string;
   textarea?: boolean;
+  required?: boolean;
 }
 
 export const Input: React.FC<InputProps> = ({ label, textarea, ...props }) => {

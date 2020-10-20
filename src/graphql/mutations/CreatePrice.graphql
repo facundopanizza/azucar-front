@@ -1,0 +1,15 @@
+mutation CreatePrice($productId: Int!, $size: String!, $amount: Float!) {
+  createPrice(productId: $productId, size: $size, amount: $amount) {
+    errors {
+      field
+      message
+    }
+    price {
+      id
+      amount
+      size
+      createdAt
+      updatedAt
+    }
+  }
+}

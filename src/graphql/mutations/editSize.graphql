@@ -1,0 +1,14 @@
+mutation EditSize($id: Int!, $title: String!) {
+  editSize(id: $id, title: $title) {
+    errors {
+      field
+      message
+    }
+    size {
+      id
+      title
+      createdAt
+      updatedAt
+    }
+  }
+}

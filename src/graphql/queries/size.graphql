@@ -1,0 +1,8 @@
+query Size($id: Int!) {
+  size(id: $id) {
+    id
+    title
+    createdAt
+    updatedAt
+  }
+}

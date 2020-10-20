@@ -1,0 +1,25 @@
+mutation EditProduct(
+  $id: Int!
+  $brandId: Int!
+  $title: String!
+  $brandCode: String!
+) {
+  editProduct(
+    id: $id
+    brandId: $brandId
+    title: $title
+    brandCode: $brandCode
+  ) {
+    product {
+      id
+      title
+      brandCode
+      createdAt
+      updatedAt
+    }
+    errors {
+      field
+      message
+    }
+  }
+}

@@ -1,0 +1,14 @@
+mutation CreateBrand($title: String!) {
+  createBrand(title: $title) {
+    errors {
+      field
+      message
+    }
+    brand {
+      id
+      title
+      createdAt
+      updatedAt
+    }
+  }
+}

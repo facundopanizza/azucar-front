@@ -1,4 +1,6 @@
+import { Field, Form, Formik, useField } from 'formik';
 import Link from 'next/link';
+import Router from 'next/router';
 
 const links = [
   { href: 'https://github.com/vercel/next.js', label: 'GitHub' },
@@ -6,9 +8,19 @@ const links = [
 ];
 
 export default function Nav() {
+  const onSubmit = (values) => {
+    Router.push({
+      pathname: '/products',
+      query: {
+        term: values.term,
+        brandId: Router.query.brandId && Router.query.brandId,
+      },
+    });
+  };
+
   return (
     <div className="border-b-2 border-brand mb-4">
-      <nav className="container m-auto py-4 flex justify-between">
+      <nav className="container m-auto py-4 flex justify-center flex-wrap md:justify-between">
         <Link href="/">
           <svg
             className="cursor-pointer"
@@ -28,11 +40,48 @@ export default function Nav() {
             />
           </svg>
         </Link>
-        <div className="flex">
-          <div className="self-center">
+        <div className="flex lg:w-3/4">
+          <div className="self-center flex flex-wrap justify-center md:justify-start w-full">
             <Link href="/products">
-              <a>Productos</a>
+              <a className="mr-3 my-3 md:my-0 self-center">Productos</a>
             </Link>
+            <Link href="/brands">
+              <a className="mr-3 my-3 md:my-0 self-center">Marcas</a>
+            </Link>
+            <Link href="/sizes">
+              <a className="mr-3 my-3 md:my-0 self-center">Talles</a>
+            </Link>
+            <Formik
+              initialValues={{
+                term: Router.query.term ? Router.query.term : '',
+              }}
+              onSubmit={(values) => onSubmit(values)}>
+              <Form className="lg:flex-1">
+                <div className="flex w-full">
+                  <button
+                    type="submit"
+                    className="px-1 bg-brand rounded-l-full text-white flex">
+                    <svg
+                      className="h-8 self-center"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor">
+                      <path
+                        fillRule="evenodd"
+                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                  <Field
+                    className="border border-brand rounded-r-full py-2 px-2 w-full lg:flex-1"
+                    type="text"
+                    name="term"
+                    required
+                  />
+                </div>
+              </Form>
+            </Formik>
           </div>
         </div>
       </nav>

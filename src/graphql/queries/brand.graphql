@@ -1,0 +1,8 @@
+query Brand($id: Int!) {
+  brand(id: $id) {
+    id
+    title
+    createdAt
+    updatedAt
+  }
+}

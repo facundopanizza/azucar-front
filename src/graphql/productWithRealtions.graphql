@@ -1,10 +1,8 @@
-query Products($term: String, $brandId: Int) {
-  products(term: $term, brandId: $brandId) {
+query ProductWithRelations($id: Int!) {
+  product(id: $id) {
     id
     title
     brandCode
-    createdAt
-    updatedAt
     brand {
       id
       title
@@ -13,6 +11,7 @@ query Products($term: String, $brandId: Int) {
       id
       amount
       size
+      updatedAt
     }
   }
 }

@@ -1,0 +1,14 @@
+mutation EditBrand($id: Int!, $title: String!) {
+  editBrand(id: $id, title: $title) {
+    errors {
+      field
+      message
+    }
+    brand {
+      id
+      title
+      createdAt
+      updatedAt
+    }
+  }
+}

@@ -1,0 +1,8 @@
+query Sizes {
+  sizes {
+    id
+    title
+    createdAt
+    updatedAt
+  }
+}

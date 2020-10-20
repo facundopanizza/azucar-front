@@ -1,0 +1,7 @@
+query Price($id: Int!) {
+  price(id: $id) {
+    id
+    amount
+    size
+  }
+}
