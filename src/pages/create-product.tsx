@@ -1,11 +1,12 @@
-import { Form, Formik } from 'formik';
+import { Field, Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
 import React from 'react';
 import Card from '../components/Card';
 import { Input } from '../components/Input';
 import Layout from '../components/Layout';
-import { SelectField } from '../components/SelectField';
+import SelectField from '../components/SelectField';
 import {
+  useCategoriesQuery,
   useCreateProductMutation,
   useSelectBrandsQuery,
 } from '../generated/graphql';
@@ -15,6 +16,10 @@ interface CreateProductProps {}
 
 const CreateProduct: React.FC<CreateProductProps> = ({}) => {
   const { data, loading } = useSelectBrandsQuery();
+  const {
+    data: dataCategories,
+    loading: loadingCategories,
+  } = useCategoriesQuery();
   const [createProduct] = useCreateProductMutation();
   const router = useRouter();
 
@@ -22,7 +27,12 @@ const CreateProduct: React.FC<CreateProductProps> = ({}) => {
     <Layout>
       <Card header="Crear Producto" backLink="/products">
         <Formik
-          initialValues={{ title: '', brandCode: '', brandId: 'default' }}
+          initialValues={{
+            title: '',
+            brandCode: '',
+            brandId: 'default',
+            categoriesIds: [],
+          }}
           onSubmit={async (values, { setErrors }) => {
             if (values.brandId === 'default') {
               setErrors({ brandId: 'Selecciona una marca' });
@@ -34,6 +44,7 @@ const CreateProduct: React.FC<CreateProductProps> = ({}) => {
                 title: values.title,
                 brandCode: values.brandCode,
                 brandId: parseInt(values.brandId),
+                categoriesIds: values.categoriesIds,
               },
               update: (cache) => {
                 cache.evict({ fieldName: 'products' });
@@ -65,12 +76,44 @@ const CreateProduct: React.FC<CreateProductProps> = ({}) => {
             </div>
             <div className="mt-3">
               {!loading ? (
-                <SelectField
+                // <SelectField
+                //   name="brandId"
+                //   label="Marca"
+                //   placeholder="Selecciona una marca"
+                //   options={data.brands}
+                //   optionName="title"
+                // />
+                <Field
                   name="brandId"
+                  component={SelectField}
                   label="Marca"
-                  placeholder="Selecciona una marca"
-                  options={data.brands}
-                  optionName="title"
+                  placeholder="Selecciona una Marca"
+                  options={data.brands.map((brand) => ({
+                    value: brand.id,
+                    label: brand.title,
+                  }))}
+                />
+              ) : null}
+            </div>
+            <div className="mt-3">
+              {!loadingCategories ? (
+                // <SelectField
+                //   name="cateoriesIds"
+                //   label="Categorias"
+                //   placeholder="Seleccione categorias"
+                //   options={dataCategories.categories}
+                //   optionName="title"
+                // />
+                <Field
+                  name="categoriesIds"
+                  component={SelectField}
+                  label="Categories"
+                  placeholder="Selecciona Categorias"
+                  options={dataCategories.categories.map((category) => ({
+                    value: category.id,
+                    label: category.title,
+                  }))}
+                  isMulti
                 />
               ) : null}
             </div>

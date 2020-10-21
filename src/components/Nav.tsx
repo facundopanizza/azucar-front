@@ -1,6 +1,6 @@
 import { Field, Form, Formik, useField } from 'formik';
 import Link from 'next/link';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 
 const links = [
   { href: 'https://github.com/vercel/next.js', label: 'GitHub' },
@@ -8,12 +8,13 @@ const links = [
 ];
 
 export default function Nav() {
+  const router = useRouter();
   const onSubmit = (values) => {
-    Router.push({
+    router.push({
       pathname: '/products',
       query: {
         term: values.term,
-        brandId: Router.query.brandId && Router.query.brandId,
+        brandId: router.query.brandId && router.query.brandId,
       },
     });
   };
@@ -43,17 +44,20 @@ export default function Nav() {
         <div className="flex lg:w-3/4">
           <div className="self-center flex flex-wrap justify-center md:justify-start w-full">
             <Link href="/products">
-              <a className="mr-3 my-3 md:my-0 self-center">Productos</a>
+              <a className="mr-3 my-3 md:my-0 self-center">productos</a>
             </Link>
             <Link href="/brands">
-              <a className="mr-3 my-3 md:my-0 self-center">Marcas</a>
+              <a className="mr-3 my-3 md:my-0 self-center">marcas</a>
             </Link>
             <Link href="/sizes">
-              <a className="mr-3 my-3 md:my-0 self-center">Talles</a>
+              <a className="mr-3 my-3 md:my-0 self-center">talles</a>
+            </Link>
+            <Link href="/categories">
+              <a className="mr-3 my-3 md:my-0 self-center">categorías</a>
             </Link>
             <Formik
               initialValues={{
-                term: Router.query.term ? Router.query.term : '',
+                term: router.query.term ? router.query.term : '',
               }}
               onSubmit={(values) => onSubmit(values)}>
               <Form className="lg:flex-1">

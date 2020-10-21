@@ -1,4 +1,4 @@
-import { Form, Formik } from 'formik';
+import { Field, Form, Formik } from 'formik';
 import Router from 'next/router';
 import React, { useState } from 'react';
 import Card from '../../components/Card';
@@ -7,7 +7,7 @@ import ItemAndText from '../../components/ItemAndText';
 import Layout from '../../components/Layout';
 import MessageCenter from '../../components/MessageCenter';
 import Modal from '../../components/Modal';
-import { SelectField } from '../../components/SelectField';
+import SelectField from '../../components/SelectField';
 import {
   useCreatePriceMutation,
   useDeletePriceMutation,
@@ -190,13 +190,15 @@ const Post: React.FC<{}> = () => {
               </button>
             </div>
             <div className="my-3">
-              <SelectField
+              <Field
+                component={SelectField}
                 name="size"
-                label="Talle"
                 placeholder="Selecciona un Talle"
-                options={sizesData.sizes}
-                optionName="title"
-                value="title"
+                label="Talle"
+                options={sizesData.sizes.map((size) => ({
+                  value: size.title,
+                  label: size.title,
+                }))}
               />
             </div>
             <div className="mb-3">
@@ -279,12 +281,15 @@ const Post: React.FC<{}> = () => {
               </button>
             </div>
             <div className="my-3">
-              <Input
+              <Field
+                component={SelectField}
                 name="size"
+                placeholder="Selecciona un Talle"
                 label="Talle"
-                placeholder="XXXL"
-                type="text"
-                required
+                options={sizesData.sizes.map((size) => ({
+                  value: size.title,
+                  label: size.title,
+                }))}
               />
             </div>
             <div className="mb-3">
@@ -319,6 +324,12 @@ const Post: React.FC<{}> = () => {
           <div></div>
           <ItemAndText name="Marca" text={product.brand.title} />
           <ItemAndText name="Codigo de Marca" text={product.brandCode} />
+          <ItemAndText
+            name="Categorias"
+            text={product.categories
+              .map((category) => category.title)
+              .join(', ')}
+          />
           <div></div>
         </div>
         <div className="flex justify-between mt-2">

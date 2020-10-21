@@ -61,7 +61,7 @@ export default function Brands() {
           <h1 className="text-2xl self-center">Talles</h1>
           <Link href="/create-size">
             <button className="bg-brand text-white py-2 px-4 rounded mb-4 float-right cursor-pointer">
-              Crear Talle
+              crear talle
             </button>
           </Link>
         </div>
@@ -69,7 +69,8 @@ export default function Brands() {
         <table className="w-full text-center table-auto">
           <thead className="bg-gray-400">
             <tr>
-              <th className="py-4">ID</th> <th className="py-4">Talle</th>
+              <th className="py-4">ID</th>
+              <th className="py-4">Talle</th>
               <th className="py-4"></th>
             </tr>
           </thead>

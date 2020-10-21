@@ -1,47 +1,62 @@
+import { FieldProps } from 'formik';
 import React from 'react';
-import { useField, Field } from 'formik';
 import Select from 'react-select';
+import { OptionsType, ValueType } from 'react-select';
 
-interface InputProps {
-  name: string;
+interface Option {
   label: string;
-  placeholder: string;
-  options: any;
-  optionName: string;
-  value?: string;
+  value: string;
 }
 
-export const SelectField: React.FC<InputProps> = ({
-  label,
-  name,
+interface CustomSelectProps extends FieldProps {
+  options: OptionsType<Option>;
+  label: string;
+  placeholder: string;
+  isMulti?: boolean;
+}
+
+const SelectField = ({
+  field,
+  form,
   options,
-  optionName,
-  value = 'id',
-  ...props
-}) => {
-  const [field, { error }, { setValue, setTouched }] = useField(name);
+  isMulti = false,
+  label,
+  placeholder,
+}: CustomSelectProps) => {
+  const onChange = (option: ValueType<Option | Option[]>) => {
+    option = !option ? [] : option;
+
+    form.setFieldValue(
+      field.name,
+      isMulti
+        ? (option as Option[]).map((item: Option) => item.value)
+        : (option as Option).value
+    );
+  };
+
+  const getValue = () => {
+    if (options) {
+      return isMulti
+        ? options.filter((option) => field.value.indexOf(option.value) >= 0)
+        : options.find((option) => option.value === field.value);
+    } else {
+      return isMulti ? [] : ('' as any);
+    }
+  };
 
   return (
     <>
-      <div className="mb-1">
-        <label htmlFor={field.name}>{label}</label>
-      </div>
-      <Field
-        as="select"
+      <label htmlFor="">{label}</label>
+      <Select
         name={field.name}
-        className={`w-full border bg-white border-gray-500 focus:border-blue-500 rounded py-2 px-2 ${
-          error ? 'border-red-500' : ''
-        }`}>
-        <option value="default">{props.placeholder}</option>
-        {options.map((option) => {
-          return (
-            <option key={option.id} value={option[value]}>
-              {option[optionName]}
-            </option>
-          );
-        })}
-      </Field>
-      {error ? <div className="text-red-600">{error}</div> : null}
+        value={getValue()}
+        onChange={onChange}
+        options={options}
+        isMulti={isMulti}
+        placeholder={placeholder}
+      />
     </>
   );
 };
+
+export default SelectField;

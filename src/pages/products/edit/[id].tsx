@@ -1,12 +1,13 @@
-import { Form, Formik } from 'formik';
+import { Field, Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
 import React from 'react';
 import Card from '../../../components/Card';
 import { Input } from '../../../components/Input';
 import Layout from '../../../components/Layout';
 import MessageCenter from '../../../components/MessageCenter';
-import { SelectField } from '../../../components/SelectField';
+import SelectField from '../../../components/SelectField';
 import {
+  useCategoriesQuery,
   useEditProductMutation,
   useSelectBrandsQuery,
 } from '../../../generated/graphql';
@@ -21,6 +22,10 @@ const CreateProduct: React.FC<CreateProductProps> = ({}) => {
     loading: productLoading,
     error,
   } = useGetProductFromUrl();
+  const {
+    data: dataCategories,
+    loading: loadingCategories,
+  } = useCategoriesQuery();
   const { data, loading } = useSelectBrandsQuery();
   const [editProductMutation] = useEditProductMutation();
   const router = useRouter();
@@ -44,20 +49,19 @@ const CreateProduct: React.FC<CreateProductProps> = ({}) => {
           initialValues={{
             title: productData.product.title,
             brandCode: productData.product.brandCode,
-            brandId: 'default',
+            brandId: productData.product.brand.id,
+            categoriesIds: productData.product.categories.map(
+              (category) => category.id
+            ),
           }}
           onSubmit={async (values, { setErrors }) => {
-            if (values.brandId === 'default') {
-              setErrors({ brandId: 'Selecciona una marca' });
-              return;
-            }
-
             const response = await editProductMutation({
               variables: {
                 id: productData.product.id,
                 title: values.title,
                 brandCode: values.brandCode,
-                brandId: parseInt(values.brandId),
+                brandId: values.brandId,
+                categoriesIds: values.categoriesIds,
               },
             });
 
@@ -85,15 +89,33 @@ const CreateProduct: React.FC<CreateProductProps> = ({}) => {
               />
             </div>
             <div className="mt-3">
-              {!loading ? (
-                <SelectField
+              {!loading && (
+                <Field
+                  component={SelectField}
                   name="brandId"
                   label="Marca"
                   placeholder="Selecciona una marca"
-                  options={data.brands}
-                  optionName="title"
+                  options={data.brands.map((brand) => ({
+                    value: brand.id,
+                    label: brand.title,
+                  }))}
                 />
-              ) : null}
+              )}
+            </div>
+            <div className="mt-3">
+              {!loadingCategories && (
+                <Field
+                  name="categoriesIds"
+                  component={SelectField}
+                  label="Categories"
+                  placeholder="Selecciona Categorias"
+                  options={dataCategories.categories.map((category) => ({
+                    value: category.id,
+                    label: category.title,
+                  }))}
+                  isMulti
+                />
+              )}
             </div>
             <button
               className="mb-2 mt-3 bg-brand py-2 px-4 rounded text-white"

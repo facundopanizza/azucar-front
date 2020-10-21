@@ -5,15 +5,15 @@ import Card from '../../../components/Card';
 import { Input } from '../../../components/Input';
 import Layout from '../../../components/Layout';
 import MessageCenter from '../../../components/MessageCenter';
-import { useEditBrandMutation } from '../../../generated/graphql';
+import { useEditCategoryMutation } from '../../../generated/graphql';
 import { toErrorMap } from '../../../utils/toErrorMap';
-import useGetBrandFromUrl from '../../../utils/useGetBrandFromUrl';
+import useGetCategoryFromUrl from '../../../utils/useGetCategoryFromUrl';
 
-interface EditBrandProps {}
+interface EditCategoriesProps {}
 
-const EditBrand: React.FC<EditBrandProps> = ({}) => {
-  const { data, loading, error } = useGetBrandFromUrl();
-  const [editBrandMutation] = useEditBrandMutation();
+const EditCategories: React.FC<EditCategoriesProps> = ({}) => {
+  const { data, loading, error } = useGetCategoryFromUrl();
+  const [editCategoryMutation] = useEditCategoryMutation();
 
   if (loading || !data) {
     return <MessageCenter text="Cargando..." />;
@@ -23,27 +23,27 @@ const EditBrand: React.FC<EditBrandProps> = ({}) => {
     return <MessageCenter text={error.message} />;
   }
 
-  if (!data.brand) {
+  if (!data.category) {
     return <MessageCenter text="Esta marca no existe." />;
   }
 
   return (
     <Layout>
-      <Card header="Editar Marca" backLink="/brands">
+      <Card header="Editar Marca" backLink="/categories">
         <Formik
-          initialValues={{ id: data.brand.id, title: data.brand.title }}
+          initialValues={{ id: data.category.id, title: data.category.title }}
           onSubmit={async (values, { setErrors }) => {
-            const response = await editBrandMutation({
+            const response = await editCategoryMutation({
               variables: {
                 id: values.id,
                 title: values.title,
               },
             });
 
-            if (response.data?.editBrand.errors) {
-              setErrors(toErrorMap(response.data.editBrand.errors));
+            if (response.data?.editCategory.errors) {
+              setErrors(toErrorMap(response.data.editCategory.errors));
             } else {
-              Router.push('/brands');
+              Router.push('/categories');
             }
           }}>
           <Form className="w-2/3 m-auto">
@@ -66,4 +66,4 @@ const EditBrand: React.FC<EditBrandProps> = ({}) => {
   );
 };
 
-export default EditBrand;
+export default EditCategories;

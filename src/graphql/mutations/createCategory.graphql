@@ -1,0 +1,12 @@
+mutation CreateCategory($title: String!) {
+  createCategory(title: $title) {
+    errors {
+      field
+      message
+    }
+    category {
+      id
+      title
+    }
+  }
+}

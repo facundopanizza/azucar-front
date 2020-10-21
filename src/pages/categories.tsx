@@ -1,16 +1,20 @@
 import Link from 'next/link';
-import Router from 'next/router';
 import React, { useState } from 'react';
 import Layout from '../components/Layout';
 import MessageCenter from '../components/MessageCenter';
 import Modal from '../components/Modal';
-import { useBrandsQuery, useDeleteBrandMutation } from '../generated/graphql';
+import {
+  useCategoriesQuery,
+  useDeleteCategoryMutation,
+  useDeleteSizeMutation,
+  useSizesQuery,
+} from '../generated/graphql';
 
 export default function Brands() {
-  const { data, error, loading } = useBrandsQuery();
+  const { data, error, loading } = useCategoriesQuery();
   const [deleteModal, setDeleteModal] = useState(false);
-  const [selectedBrand, setSelectedBrand] = useState(-1);
-  const [deleteBrandMutation] = useDeleteBrandMutation();
+  const [selectedSize, setSelectedSize] = useState(-1);
+  const [deleteCategoryMutation] = useDeleteCategoryMutation();
 
   if (error) {
     return <MessageCenter text={error.message} />;
@@ -20,10 +24,10 @@ export default function Brands() {
     return <MessageCenter text="Cargando..." />;
   }
 
-  const renderDeleteBrand = () => {
+  const renderDeleteSize = () => {
     return (
       <Modal state={[deleteModal, setDeleteModal]}>
-        Estas seguro de que desea eliminar esta marca?
+        Estas seguro de que desea eliminar esta categoría?
         <div className="flex justify-center mt-3">
           <button
             onClick={() => setDeleteModal(false)}
@@ -31,7 +35,7 @@ export default function Brands() {
             no
           </button>
           <button
-            onClick={deleteBrand}
+            onClick={deleteSize}
             className="py-2 px-4 border border-red-500 text-red-500 rounded">
             si, eliminar
           </button>
@@ -40,29 +44,29 @@ export default function Brands() {
     );
   };
 
-  const deleteBrand = async () => {
-    if (selectedBrand === -1) return;
+  const deleteSize = async () => {
+    if (selectedSize === -1) return;
 
-    await deleteBrandMutation({
-      variables: { id: selectedBrand },
+    await deleteCategoryMutation({
+      variables: { id: selectedSize },
       update: (cache) => {
-        cache.evict({ id: 'Brand:' + selectedBrand });
+        cache.evict({ id: 'Category:' + selectedSize });
       },
     });
 
     setDeleteModal(false);
-    setSelectedBrand(-1);
+    setSelectedSize(-1);
   };
 
   return (
     <Layout>
-      {renderDeleteBrand()}
+      {renderDeleteSize()}
       <div className="container m-auto">
         <div className="flex justify-between">
-          <h1 className="text-2xl self-center">Marcas</h1>
-          <Link href="/create-brand">
-            <button className="bg-brand text-white py-2 px-4 rounded mb-4 float-right cursor-pointer">
-              crear marca
+          <h1 className="text-2xl self-center">Categorías</h1>
+          <Link href="/create-category">
+            <button className="bg-categories text-white py-2 px-4 rounded mb-4 float-right cursor-pointer">
+              crear categoría
             </button>
           </Link>
         </div>
@@ -71,25 +75,25 @@ export default function Brands() {
           <thead className="bg-gray-400">
             <tr>
               <th className="py-4">ID</th>
-              <th className="py-4">Nombre</th>
+              <th className="py-4">Categoría</th>
               <th className="py-4"></th>
             </tr>
           </thead>
           <tbody>
-            {data.brands.map((brand) => {
+            {data.categories.map((category) => {
               return (
-                <tr key={brand.id} className="border hover:bg-gray-300">
-                  <td className="py-4">{brand.id}</td>
-                  <td className="py-4">{brand.title}</td>
+                <tr key={category.id} className="border hover:bg-gray-300">
+                  <td className="py-4">{category.id}</td>
+                  <td className="py-4">{category.title}</td>
                   <td className="py-4">
-                    <Link href={`/brands/edit/${brand.id}`}>
+                    <Link href={`/categories/edit/${category.id}`}>
                       <button className="rounded px-4 py-1 bg-blue-300 mr-2">
                         editar
                       </button>
                     </Link>
                     <button
                       onClick={() => {
-                        setSelectedBrand(brand.id);
+                        setSelectedSize(category.id);
                         setDeleteModal(true);
                       }}
                       className="rounded px-4 py-1 text-red-500 border border-red-500">

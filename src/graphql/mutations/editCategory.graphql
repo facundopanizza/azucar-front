@@ -1,0 +1,12 @@
+mutation EditCategory($id: Int!, $title: String!) {
+  editCategory(id: $id, title: $title) {
+    errors {
+      field
+      message
+    }
+    category {
+      id
+      title
+    }
+  }
+}

@@ -3,12 +3,14 @@ mutation EditProduct(
   $brandId: Int!
   $title: String!
   $brandCode: String!
+  $categoriesIds: [Int!]!
 ) {
   editProduct(
     id: $id
     brandId: $brandId
     title: $title
     brandCode: $brandCode
+    categoriesIds: $categoriesIds
   ) {
     product {
       id

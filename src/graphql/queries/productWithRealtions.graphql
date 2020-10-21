@@ -13,5 +13,9 @@ query ProductWithRelations($id: Int!) {
       size
       updatedAt
     }
+    categories {
+      id
+      title
+    }
   }
 }

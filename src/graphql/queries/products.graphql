@@ -1,18 +1,37 @@
-query Products($term: String, $brandId: Int) {
-  products(term: $term, brandId: $brandId) {
-    id
-    title
-    brandCode
-    createdAt
-    updatedAt
-    brand {
+query Products(
+  $term: String
+  $brandId: Int
+  $categoryId: Int
+  $limit: Int
+  $offset: Int
+) {
+  products(
+    term: $term
+    brandId: $brandId
+    categoryId: $categoryId
+    limit: $limit
+    offset: $offset
+  ) {
+    products {
       id
       title
+      brandCode
+      createdAt
+      updatedAt
+      brand {
+        id
+        title
+      }
+      prices {
+        id
+        amount
+        size
+      }
     }
-    prices {
-      id
-      amount
-      size
+    pagination {
+      pages
+      offset
+      limit
     }
   }
 }

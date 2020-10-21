@@ -1,5 +1,15 @@
-mutation CreateProduct($brandId: Int!, $brandCode: String!, $title: String!) {
-  createProduct(brandId: $brandId, brandCode: $brandCode, title: $title) {
+mutation CreateProduct(
+  $brandId: Int!
+  $brandCode: String!
+  $title: String!
+  $categoriesIds: [Int!]!
+) {
+  createProduct(
+    brandId: $brandId
+    brandCode: $brandCode
+    title: $title
+    categoriesIds: $categoriesIds
+  ) {
     errors {
       field
       message
