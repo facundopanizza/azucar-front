@@ -76,13 +76,6 @@ const CreateProduct: React.FC<CreateProductProps> = ({}) => {
             </div>
             <div className="mt-3">
               {!loading ? (
-                // <SelectField
-                //   name="brandId"
-                //   label="Marca"
-                //   placeholder="Selecciona una marca"
-                //   options={data.brands}
-                //   optionName="title"
-                // />
                 <Field
                   name="brandId"
                   component={SelectField}
@@ -97,13 +90,6 @@ const CreateProduct: React.FC<CreateProductProps> = ({}) => {
             </div>
             <div className="mt-3">
               {!loadingCategories ? (
-                // <SelectField
-                //   name="cateoriesIds"
-                //   label="Categorias"
-                //   placeholder="Seleccione categorias"
-                //   options={dataCategories.categories}
-                //   optionName="title"
-                // />
                 <Field
                   name="categoriesIds"
                   component={SelectField}

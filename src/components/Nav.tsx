@@ -13,8 +13,8 @@ export default function Nav() {
     router.push({
       pathname: '/products',
       query: {
+        ...router.query,
         term: values.term,
-        brandId: router.query.brandId && router.query.brandId,
       },
     });
   };

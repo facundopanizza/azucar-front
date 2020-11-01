@@ -64,7 +64,7 @@ export default function Products() {
           router.push({
             pathname: '/products',
             query: {
-              term: router.query.term ? router.query.term : '',
+              ...router.query,
               brandId: brand.value,
             },
           });

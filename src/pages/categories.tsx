@@ -65,7 +65,7 @@ export default function Brands() {
         <div className="flex justify-between">
           <h1 className="text-2xl self-center">Categorías</h1>
           <Link href="/create-category">
-            <button className="bg-categories text-white py-2 px-4 rounded mb-4 float-right cursor-pointer">
+            <button className="bg-brand text-white py-2 px-4 rounded mb-4 float-right cursor-pointer">
               crear categoría
             </button>
           </Link>
