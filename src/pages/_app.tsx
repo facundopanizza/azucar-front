@@ -1,8 +1,25 @@
 import '../styles/index.css';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
+import {  setContext} from '@apollo/client/link/context'
+
+const httpLink = createHttpLink({ 
+  uri: `${process.env.NEXT_PUBLIC_BACK_URL}/graphql`
+})
+
+const authLink = setContext((_, { headers} ) => {
+  const token = localStorage.getItem('token');
+
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? token : '',
+    }
+  }
+})
 
 const client = new ApolloClient({
-  uri: 'http://192.168.1.3:4000/graphql',
+  uri: `${process.env.NEXT_PUBLIC_BACK_URL}/graphql`,
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 

@@ -15,14 +15,14 @@ export type Query = {
   __typename?: 'Query';
   brands: Array<Brand>;
   brand?: Maybe<Brand>;
-  sizes: Array<Size>;
-  size?: Maybe<Size>;
-  products: ProductsResponse;
-  product?: Maybe<Product>;
-  prices: Array<Price>;
-  price?: Maybe<Price>;
   categories: Array<Category>;
   category?: Maybe<Category>;
+  prices: Array<Price>;
+  price?: Maybe<Price>;
+  products: ProductsResponse;
+  product?: Maybe<Product>;
+  sizes: Array<Size>;
+  size?: Maybe<Size>;
 };
 
 
@@ -31,7 +31,12 @@ export type QueryBrandArgs = {
 };
 
 
-export type QuerySizeArgs = {
+export type QueryCategoryArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueryPriceArgs = {
   id: Scalars['Int'];
 };
 
@@ -50,12 +55,7 @@ export type QueryProductArgs = {
 };
 
 
-export type QueryPriceArgs = {
-  id: Scalars['Int'];
-};
-
-
-export type QueryCategoryArgs = {
+export type QuerySizeArgs = {
   id: Scalars['Int'];
 };
 
@@ -67,10 +67,19 @@ export type Brand = {
   updatedAt: Scalars['String'];
 };
 
-export type Size = {
-  __typename?: 'Size';
+export type Category = {
+  __typename?: 'Category';
   id: Scalars['Float'];
   title: Scalars['String'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+};
+
+export type Price = {
+  __typename?: 'Price';
+  id: Scalars['Float'];
+  amount: Scalars['Float'];
+  size: Scalars['String'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -93,23 +102,6 @@ export type Product = {
   updatedAt: Scalars['String'];
 };
 
-export type Category = {
-  __typename?: 'Category';
-  id: Scalars['Float'];
-  title: Scalars['String'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
-};
-
-export type Price = {
-  __typename?: 'Price';
-  id: Scalars['Float'];
-  amount: Scalars['Float'];
-  size: Scalars['String'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
-};
-
 export type Pagination = {
   __typename?: 'Pagination';
   pages: Scalars['Int'];
@@ -117,23 +109,31 @@ export type Pagination = {
   limit: Scalars['Int'];
 };
 
+export type Size = {
+  __typename?: 'Size';
+  id: Scalars['Float'];
+  title: Scalars['String'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createBrand: BrandResponse;
   editBrand: BrandResponse;
   deleteBrand: Scalars['Boolean'];
-  createSize: SizeResponse;
-  editSize: SizeResponse;
-  deleteSize: Scalars['Boolean'];
-  createProduct: ProductResponse;
-  editProduct: ProductResponse;
-  deleteProduct: Scalars['Boolean'];
-  createPrice: PriceResponse;
-  editPrice: PriceResponse;
-  deletePrice: Scalars['Boolean'];
   createCategory: CategoryResponse;
   editCategory: CategoryResponse;
   deleteCategory: Scalars['Boolean'];
+  createPrice: PriceResponse;
+  editPrice: PriceResponse;
+  deletePrice: Scalars['Boolean'];
+  createProduct: ProductResponse;
+  editProduct: ProductResponse;
+  deleteProduct: Scalars['Boolean'];
+  createSize: SizeResponse;
+  editSize: SizeResponse;
+  deleteSize: Scalars['Boolean'];
 };
 
 
@@ -153,18 +153,37 @@ export type MutationDeleteBrandArgs = {
 };
 
 
-export type MutationCreateSizeArgs = {
+export type MutationCreateCategoryArgs = {
   title: Scalars['String'];
 };
 
 
-export type MutationEditSizeArgs = {
+export type MutationEditCategoryArgs = {
   title: Scalars['String'];
   id: Scalars['Int'];
 };
 
 
-export type MutationDeleteSizeArgs = {
+export type MutationDeleteCategoryArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type MutationCreatePriceArgs = {
+  productId: Scalars['Int'];
+  size: Scalars['String'];
+  amount: Scalars['Float'];
+};
+
+
+export type MutationEditPriceArgs = {
+  size: Scalars['String'];
+  amount: Scalars['Float'];
+  id: Scalars['Int'];
+};
+
+
+export type MutationDeletePriceArgs = {
   id: Scalars['Int'];
 };
 
@@ -191,37 +210,18 @@ export type MutationDeleteProductArgs = {
 };
 
 
-export type MutationCreatePriceArgs = {
-  productId: Scalars['Int'];
-  size: Scalars['String'];
-  amount: Scalars['Float'];
-};
-
-
-export type MutationEditPriceArgs = {
-  size: Scalars['String'];
-  amount: Scalars['Float'];
-  id: Scalars['Int'];
-};
-
-
-export type MutationDeletePriceArgs = {
-  id: Scalars['Int'];
-};
-
-
-export type MutationCreateCategoryArgs = {
+export type MutationCreateSizeArgs = {
   title: Scalars['String'];
 };
 
 
-export type MutationEditCategoryArgs = {
+export type MutationEditSizeArgs = {
   title: Scalars['String'];
   id: Scalars['Int'];
 };
 
 
-export type MutationDeleteCategoryArgs = {
+export type MutationDeleteSizeArgs = {
   id: Scalars['Int'];
 };
 
@@ -237,16 +237,10 @@ export type FieldError = {
   message: Scalars['String'];
 };
 
-export type SizeResponse = {
-  __typename?: 'SizeResponse';
+export type CategoryResponse = {
+  __typename?: 'CategoryResponse';
   errors?: Maybe<Array<FieldError>>;
-  size?: Maybe<Size>;
-};
-
-export type ProductResponse = {
-  __typename?: 'ProductResponse';
-  errors?: Maybe<Array<FieldError>>;
-  product?: Maybe<Product>;
+  category?: Maybe<Category>;
 };
 
 export type PriceResponse = {
@@ -255,10 +249,16 @@ export type PriceResponse = {
   price?: Maybe<Price>;
 };
 
-export type CategoryResponse = {
-  __typename?: 'CategoryResponse';
+export type ProductResponse = {
+  __typename?: 'ProductResponse';
   errors?: Maybe<Array<FieldError>>;
-  category?: Maybe<Category>;
+  product?: Maybe<Product>;
+};
+
+export type SizeResponse = {
+  __typename?: 'SizeResponse';
+  errors?: Maybe<Array<FieldError>>;
+  size?: Maybe<Size>;
 };
 
 export type CreatePriceMutationVariables = Exact<{

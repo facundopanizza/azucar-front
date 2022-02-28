@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 import MessageCenter from '../components/MessageCenter';
 import Modal from '../components/Modal';
@@ -11,10 +12,15 @@ import {
 } from '../generated/graphql';
 
 export default function Brands() {
+  const router = useRouter();
   const { data, error, loading } = useCategoriesQuery();
   const [deleteModal, setDeleteModal] = useState(false);
   const [selectedSize, setSelectedSize] = useState(-1);
   const [deleteCategoryMutation] = useDeleteCategoryMutation();
+
+  useEffect(() => {
+    if (!localStorage.getItem('token')) router.push('/login');
+  }, []);
 
   if (error) {
     return <MessageCenter text={error.message} />;

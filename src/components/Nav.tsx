@@ -22,7 +22,7 @@ export default function Nav() {
   return (
     <div className="border-b-2 border-brand mb-4">
       <nav className="container m-auto py-4 flex justify-center flex-wrap md:justify-between">
-        <Link href="/">
+        <Link href="/products">
           <svg
             className="cursor-pointer"
             width="174"
@@ -55,6 +55,11 @@ export default function Nav() {
             <Link href="/categories">
               <a className="mr-3 my-3 md:my-0 self-center">categorías</a>
             </Link>
+            <a href="#" onClick={(e) => {
+              localStorage.removeItem('token');
+
+              router.push('/login');
+            }} className='mr-3 my-3 md:my-0 self-center'>cerrar sesion</a>
             <Formik
               initialValues={{
                 term: router.query.term ? router.query.term : '',

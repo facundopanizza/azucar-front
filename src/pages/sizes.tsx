@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import Layout from '../components/Layout';
 import MessageCenter from '../components/MessageCenter';
@@ -6,10 +7,13 @@ import Modal from '../components/Modal';
 import { useDeleteSizeMutation, useSizesQuery } from '../generated/graphql';
 
 export default function Brands() {
+  const router = useRouter();
   const { data, error, loading } = useSizesQuery();
   const [deleteModal, setDeleteModal] = useState(false);
   const [selectedSize, setSelectedSize] = useState(-1);
   const [deleteSizeMutation] = useDeleteSizeMutation();
+
+  if (!localStorage.getItem('token')) router.push('/login');
 
   if (error) {
     return <MessageCenter text={error.message} />;

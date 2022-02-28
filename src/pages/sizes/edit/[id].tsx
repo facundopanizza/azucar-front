@@ -1,6 +1,6 @@
 import { Form, Formik } from 'formik';
-import Router from 'next/router';
-import React from 'react';
+import Router, { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
 import Card from '../../../components/Card';
 import { Input } from '../../../components/Input';
 import Layout from '../../../components/Layout';
@@ -12,8 +12,13 @@ import useGetSizeFromUrl from '../../../utils/useGetSizeFromUrl';
 interface EditSizeProps {}
 
 const EditSize: React.FC<EditSizeProps> = ({}) => {
+  const router = useRouter();
   const { data, loading, error } = useGetSizeFromUrl();
   const [editBrandMutation] = useEditSizeMutation();
+
+  useEffect(() => {
+    if (!localStorage.getItem('token')) router.push('/login');
+  }, []);
 
   if (loading || !data) {
     return <MessageCenter text="Cargando..." />;

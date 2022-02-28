@@ -1,16 +1,21 @@
 import Link from 'next/link';
-import Router from 'next/router';
-import React, { useState } from 'react';
+import Router, { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 import MessageCenter from '../components/MessageCenter';
 import Modal from '../components/Modal';
 import { useBrandsQuery, useDeleteBrandMutation } from '../generated/graphql';
 
 export default function Brands() {
+  const router = useRouter();
   const { data, error, loading } = useBrandsQuery();
   const [deleteModal, setDeleteModal] = useState(false);
   const [selectedBrand, setSelectedBrand] = useState(-1);
   const [deleteBrandMutation] = useDeleteBrandMutation();
+
+  useEffect(() => {
+    if (!localStorage.getItem('token')) router.push('/login');
+  }, []);
 
   if (error) {
     return <MessageCenter text={error.message} />;

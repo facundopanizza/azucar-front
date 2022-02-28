@@ -1,6 +1,6 @@
 import { Field, Form, Formik } from 'formik';
-import Router from 'next/router';
-import React, { useState } from 'react';
+import Router, { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 import Card from '../../components/Card';
 import { Input } from '../../components/Input';
 import ItemAndText from '../../components/ItemAndText';
@@ -18,6 +18,7 @@ import {
 import useGetProductFromUrl from '../../utils/useGetProductFromUrl';
 
 const Post: React.FC<{}> = () => {
+  const router = useRouter();
   const { data, loading, error } = useGetProductFromUrl();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [deleteIsOpen, setDeleteIsOpen] = useState(false);
@@ -29,6 +30,10 @@ const Post: React.FC<{}> = () => {
   const [deletePriceMutation] = useDeletePriceMutation();
   const [deleteProductMutation] = useDeleteProductMutation();
   const { data: sizesData, loading: sizesLoading } = useSizesQuery();
+
+  useEffect(() => {
+    if (!localStorage.getItem('token')) router.push('/login');
+  }, []);
 
   if (loading || !data) {
     return <MessageCenter text="Cargando..." />;

@@ -1,6 +1,6 @@
 import { Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Card from '../components/Card';
 import { Input } from '../components/Input';
 import Layout from '../components/Layout';
@@ -12,6 +12,10 @@ interface CreateCategoriesProps {}
 const CreateCategories: React.FC<CreateCategoriesProps> = ({}) => {
   const [createCategoryMutation] = useCreateCategoryMutation();
   const router = useRouter();
+
+  useEffect(() => {
+    if (!localStorage.getItem('token')) router.push('/login');
+  }, []);
 
   return (
     <Layout>

@@ -30,6 +30,8 @@ export default function Products() {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
+    if (!localStorage.getItem('token')) router.push('/login');
+
     producstQuery({
       variables: {
         term: router.query.term && (router.query.term as string),
