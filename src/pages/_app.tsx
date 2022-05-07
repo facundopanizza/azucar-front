@@ -12,7 +12,6 @@ const errorControl = onError(({ networkError, graphQLErrors }) => {
   if (graphQLErrors) {
     for (let err of graphQLErrors) {
       if (err.extensions.code === 'UNAUTHENTICATED' || err.extensions.message === 'Context creation failed: you must be logged in')   {
-        console.log('asdas');
         localStorage.removeItem('token');
         window.location.replace('/login');
       }
@@ -25,7 +24,11 @@ const errorControl = onError(({ networkError, graphQLErrors }) => {
 });
 
 const authLink = setContext((_, { headers} ) => {
-  const token = localStorage.getItem('token');
+  let token = "";
+
+  if (typeof window !== 'undefined') {
+    token = localStorage.getItem('token');
+  }
 
   return {
     headers: {
