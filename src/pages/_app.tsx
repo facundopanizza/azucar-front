@@ -5,7 +5,7 @@ import {  setContext} from '@apollo/client/link/context'
 import { Router } from 'next/router';
 
 const httpLink = createHttpLink({ 
-  uri: `${process.env.NEXT_PUBLIC_BACK_URL}/graphql`
+  uri: `https://azucar-api.panizza.dev/graphql`
 })
 
 const errorControl = onError(({ networkError, graphQLErrors }) => {
@@ -39,7 +39,7 @@ const authLink = setContext((_, { headers} ) => {
 })
 
 const client = new ApolloClient({
-  uri: `${process.env.NEXT_PUBLIC_BACK_URL}/graphql`,
+  uri: `https://azucar-api.panizza.dev/graphql`,
   link: errorControl.concat(authLink.concat(httpLink)),
   cache: new InMemoryCache(),
 });
