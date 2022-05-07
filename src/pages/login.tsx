@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 const Login: FC = () => {
   const [error, setError] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   const onClick = async (e) => {
@@ -33,7 +34,8 @@ const Login: FC = () => {
             <label>Contraseña</label>
             <input value={password} onChange={(e) => setPassword(e.target.value)} className={`w-full border border-gray-500 focus:border-blue-500 rounded py-2 px-2 ${
                 error ? 'border-red-500' : ''
-              }`} type="text" />
+              }`} type={showPassword ? "text" : "password"} />
+            <button onClick={() => setShowPassword(!showPassword)} type="button" className="text-sm">{ showPassword ? 'ocultar contraseña' : 'mostrar contraseña' }</button>
             {error ? <div className="text-red-600">{error}</div> : null}
           </div>
 

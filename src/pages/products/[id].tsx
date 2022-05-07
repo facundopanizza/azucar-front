@@ -35,7 +35,7 @@ const Post: React.FC<{}> = () => {
     if (!localStorage.getItem('token')) router.push('/login');
   }, []);
 
-  if (loading || !data) {
+  if (loading || !data || sizesLoading) {
     return <MessageCenter text="Cargando..." />;
   }
 
