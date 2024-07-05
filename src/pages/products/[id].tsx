@@ -65,7 +65,7 @@ const Post: React.FC<{}> = () => {
   };
 
   const renderPrices = () => {
-    return data.product.prices.map((price) => {
+    return (product.prices ?? []).map((price) => {
       return (
         <tr key={price.id} className="border hover:bg-gray-300">
           <td className="py-4">{price.amount}</td>
@@ -200,7 +200,7 @@ const Post: React.FC<{}> = () => {
                 name="size"
                 placeholder="Selecciona un Talle"
                 label="Talle"
-                options={sizesData.sizes.map((size) => ({
+                options={(sizesData?.sizes ?? []).map((size) => ({
                   value: size.title,
                   label: size.title,
                 }))}
@@ -291,7 +291,7 @@ const Post: React.FC<{}> = () => {
                 name="size"
                 placeholder="Selecciona un Talle"
                 label="Talle"
-                options={sizesData.sizes.map((size) => ({
+                options={(sizesData?.sizes ?? []).map((size) => ({
                   value: size.title,
                   label: size.title,
                 }))}
@@ -331,7 +331,7 @@ const Post: React.FC<{}> = () => {
           <ItemAndText name="Codigo de Marca" text={product.brandCode} />
           <ItemAndText
             name="Categorias"
-            text={product.categories
+            text={(product.categories ?? [])
               .map((category) => category.title)
               .join(', ')}
           />
