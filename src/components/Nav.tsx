@@ -20,7 +20,7 @@ export default function Nav() {
   };
 
   return (
-    <div className="border-b-2 border-brand mb-4">
+    <div className="border-b-2 border-brand mb-4 bg-red-500">
       <nav className="container m-auto py-4 flex justify-center flex-wrap md:justify-between">
         <Link href="/products">
           <svg
